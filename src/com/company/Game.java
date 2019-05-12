@@ -130,10 +130,87 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
     public void collision(Ball ball, Ball ball2) {
 
-        ball.setSpeedAndAngle(ball2.getSpeedFromPosition(), -ball2.getAngle());
-        ball2.setSpeedAndAngle(ball.getSpeedFromPosition(), -ball.getAngle());
-        //ball2.setSpeedX(-ball.speedX);
-        //ball2.setSpeedY(-ball.speedY);
+        //Get positions
+        double x = ball.getX();
+        double y = ball.getY();
+        double x2 = ball2.getX();
+        double y2 = ball2.getY();
+
+        //Get speed
+        double dx = ball.getSpeedX();
+        double dy = ball.getSpeedY();
+        double dx2 = ball2.getSpeedX();
+        double dy2 = ball2.getSpeedY();
+
+        double diamSqr = (ball.getRadius() + ball2.getRadius()) * (ball.getRadius() + ball2.getRadius());
+        double difDx = x - x2;
+        double difDy = y - y2;
+
+        //Move backwards (forwards if dt < 0) in time until balls are just touching
+        double CoefA = (dx - dx2) * (dx - dx2) + (dy - dy2) * (dy - dy2);
+        double CoefB = 2 * ((dx - dx2) * (x - x2) + (dy - dy2) * (y - y2));
+        double CoefC = (x - x2) * (x - x2) + (y - y2) * (y - y2) - diamSqr;
+        double t;
+        if (CoefA == 0) {
+            t = -CoefC / CoefB;
+        } else {
+            t = (-CoefB - Math.sqrt(CoefB * CoefB - 4 * CoefA * CoefC)) / (2 * CoefA);
+        }
+
+        ball.x = x + t * dx;
+        ball.y = y + t * dy;
+        x2 = x2 + t * dx2;
+        y2 = y2 + t * dy2;
+
+        //Center of momentum coordinates
+        double mx = (dx + dx2) / 2;
+        double my = (dy + dy2) / 2;
+        dx = dx - mx;
+        dy = dy - my;
+        dx2 = dx2 - mx;
+        dy2 = dy2 - my;
+
+        //New center to center line
+        difDx = x - x2;
+        difDy = y - y2;
+        double dist = Math.sqrt(difDx * difDx + difDy * difDy);
+        difDx = difDx / dist;
+        difDy = difDy / dist;
+
+        //Reflect balls velocity vectors in center to center line
+        double OB = -(difDx * dx + difDy * dy);
+        dx = dx + 2 * OB * difDx;
+        dy = dy + 2 * OB * difDy;
+        OB = -(difDx * dx2 + difDy * dy2);
+        dx2 = dx2 + 2 * OB * difDx;
+        dy2 = dy2 + 2 * OB * difDy;
+
+        //Back to moving coordinates with elastic velocity change
+        double e = Math.sqrt(1.1);
+        dx = e * (dx + mx);
+        dy = e * (dy + my);
+        dx2 = e * (dx2 + mx);
+        dy2 = e * (dy2 + my);
+
+        //Move to new bounced position
+        ball.x = x - t * dx;
+        ball.y = y - t * dy;
+        x2 = x2 - t * dx2;
+        y2 = y2 - t * dy2;
+
+        //Set velocities
+        ball2.speedX = dx2;
+        ball2.speedY = dy2;
+
+        //Set position
+        ball2.x = x2;
+        ball2.y = y2;
+
+
+
+
+
+
     }
 
     public void gameStart() {
@@ -179,7 +256,7 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
                 for (int j = 0; j < MAX_BALLS; j++ ) {
                     if(i>j) {
                         if (detectCollision(balls[i], balls[j])) {
-                            collision(balls[i], balls[j]);
+                            collision(balls[j], balls[i]);
                             System.out.println("Byla kolizja");
                         }
                     }

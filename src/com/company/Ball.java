@@ -37,6 +37,10 @@ public class Ball {
         this.speedY = speedY;
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
     public void setSpeedAndAngle(double speed, double angle) {
         this.speed = speed;
         this.angle = angle;
@@ -79,6 +83,15 @@ public class Ball {
             speedY = -speedY;
             y = ballMaxY;
         }
+    }
+
+
+    public double getSpeedY() {
+        return speedY;
+    }
+
+    public double getSpeedX() {
+        return speedX;
     }
 
     public double getX() {
