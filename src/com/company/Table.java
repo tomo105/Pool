@@ -20,7 +20,7 @@ public class Table {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         g.fillRect(minX,minY,maxX-minX-1,maxY-minY-1);
         g.setColor(Color.ORANGE);
         g.drawRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
