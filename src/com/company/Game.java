@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-
 public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
     private static final int MAX_BALLS = 3;
@@ -207,10 +206,6 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         ball2.y = y2;
 
 
-
-
-
-
     }
 
     public void gameStart() {
@@ -232,7 +227,7 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
     public void gameUpdate() {
 
-        for(int i = 0; i < MAX_BALLS; i ++) {
+        for (int i = 0; i < MAX_BALLS; i++) {
             balls[i].updateWallCollision(table);
             balls[i].addSuppression();
         }
@@ -247,14 +242,14 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             table.draw(g);
-            for(int i = 0; i < MAX_BALLS; i ++) {
+            for (int i = 0; i < MAX_BALLS; i++) {
                 balls[i].draw(g);
             }
             if (mouseClickedBall) g.drawLine((int) balls[0].getX(), (int) balls[0].getY(), (int) mouseX, (int) mouseY);
 
-            for(int i = 0; i < MAX_BALLS; i++) {
-                for (int j = 0; j < MAX_BALLS; j++ ) {
-                    if(i>j) {
+            for (int i = 0; i < MAX_BALLS; i++) {
+                for (int j = 0; j < MAX_BALLS; j++) {
+                    if (i > j) {
                         if (detectCollision(balls[i], balls[j])) {
                             collision(balls[j], balls[i]);
                             System.out.println("Byla kolizja");
