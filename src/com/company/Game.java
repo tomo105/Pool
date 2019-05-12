@@ -156,11 +156,6 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
             t = (-CoefB - Math.sqrt(CoefB * CoefB - 4 * CoefA * CoefC)) / (2 * CoefA);
         }
 
-        ball.x = x + t * dx;
-        ball.y = y + t * dy;
-        x2 = x2 + t * dx2;
-        y2 = y2 + t * dy2;
-
         //Center of momentum coordinates
         double mx = (dx + dx2) / 2;
         double my = (dy + dy2) / 2;
@@ -170,8 +165,6 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         dy2 = dy2 - my;
 
         //New center to center line
-        difDx = x - x2;
-        difDy = y - y2;
         double dist = Math.sqrt(difDx * difDx + difDy * difDy);
         difDx = difDx / dist;
         difDy = difDy / dist;
@@ -186,24 +179,23 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
         //Back to moving coordinates with elastic velocity change
         double e = Math.sqrt(1.1);
-        dx = e * (dx + mx);
-        dy = e * (dy + my);
         dx2 = e * (dx2 + mx);
         dy2 = e * (dy2 + my);
 
-        //Move to new bounced position
-        ball.x = x - t * dx;
-        ball.y = y - t * dy;
+        //First ball velocities and position
+        ball.setX(x - t * dx);
+        ball.setY(y - t * dy);
+        ball.setSpeedX( e * (dx + mx));
+        ball.setSpeedY( e * (dy + my));
+
         x2 = x2 - t * dx2;
         y2 = y2 - t * dy2;
 
-        //Set velocities
-        ball2.speedX = dx2;
-        ball2.speedY = dy2;
-
-        //Set position
-        ball2.x = x2;
-        ball2.y = y2;
+        //Set velocities and speed
+        ball2.setSpeedX(dx2);
+        ball2.setSpeedY(dy2);
+        ball2.setX(x2);
+        ball2.setY(y2);
 
 
     }
