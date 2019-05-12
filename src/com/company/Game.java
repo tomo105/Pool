@@ -4,10 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+
 public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
-    private Ball ball;
-    private Ball ball2;
+    private static final int MAX_BALLS = 3;
+    private Ball[] balls = new Ball[MAX_BALLS];
     private Table table;
 
     private DrawCanvas canvas;
@@ -35,8 +37,9 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
         int speed = 0;
         int angleInDegree = 0;
-        ball = new Ball(x, y - 300, radius, speed, angleInDegree);
-        ball2 = new Ball(x, y, radius, speed, angleInDegree);
+        balls[0] = new Ball(x, y - 300, radius, speed, angleInDegree, Color.WHITE);
+        balls[1] = new Ball(x, y, radius, speed, angleInDegree, Color.RED);
+        balls[2] = new Ball(x, y - 150, radius, speed, angleInDegree, Color.RED);
 
         table = new Table(0, 0, canvasWidth, canvasHeight);
 
@@ -75,15 +78,15 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (mouseIsInBall(e, ball)) {
+        if (mouseIsInBall(e, balls[0])) {
             mouseClickedBall = true;
 
         }
 
         if (mouseClickedBall) {
-            speed = ((ball.getX() - e.getX()) * (ball.getX() - e.getX()) + (ball.getY() - e.getY()) * (ball.getY() - e.getY())) * 0.0001;
-            double temp = ((ball.getX() - e.getX()) * (ball.getX() - e.getX()) + (ball.getY() - e.getY()) * (ball.getY() - e.getY())) * 0.0001;
-            angle = Math.toDegrees(Math.atan2(ball.getX() - e.getX(), ball.getY() - e.getY())) - 90;
+            speed = ((balls[0].getX() - e.getX()) * (balls[0].getX() - e.getX()) + (balls[0].getY() - e.getY()) * (balls[0].getY() - e.getY())) * 0.0001;
+            double temp = ((balls[0].getX() - e.getX()) * (balls[0].getX() - e.getX()) + (balls[0].getY() - e.getY()) * (balls[0].getY() - e.getY())) * 0.0001;
+            angle = Math.toDegrees(Math.atan2(balls[0].getX() - e.getX(), balls[0].getY() - e.getY())) - 90;
             System.out.println(speed);
             System.out.println(angle);
             mouseX = e.getX();  //polozenie myszki
@@ -96,11 +99,11 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {
 
         if (mouseClickedBall) {
-            ball.setSpeedAndAngle(speed, angle);
+            balls[0].setSpeedAndAngle(speed, angle);
         }
 
-        mouseX = ball.getX();
-        mouseY = ball.getY();
+        mouseX = balls[0].getX();
+        mouseY = balls[0].getY();
         mouseClickedBall = false;
     }
 
@@ -126,9 +129,8 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
     }
 
     public void collision(Ball ball, Ball ball2) {
-        ball.speedX = -ball.speedX;
-        ball.speedY = -ball.speedY;
-        System.out.println(ball.getSpeed() + ball.getAngle());
+
+        ball.setSpeedAndAngle(ball2.getSpeedFromPosition(), -ball2.getAngle());
         ball2.setSpeedAndAngle(ball.getSpeedFromPosition(), -ball.getAngle());
         //ball2.setSpeedX(-ball.speedX);
         //ball2.setSpeedY(-ball.speedY);
@@ -153,10 +155,10 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
     public void gameUpdate() {
 
-        ball.updateWallCollision(table);
-        ball.addSuppression();
-        ball2.updateWallCollision(table);
-        ball2.addSuppression();
+        for(int i = 0; i < MAX_BALLS; i ++) {
+            balls[i].updateWallCollision(table);
+            balls[i].addSuppression();
+        }
     }
 
     public boolean mouseIsInBall(MouseEvent e, Ball ball) {
@@ -168,14 +170,20 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             table.draw(g);
-            ball.draw(g);
-            ball2.draw(g);
-            if (mouseClickedBall) g.drawLine((int) ball.getX(), (int) ball.getY(), (int) mouseX, (int) mouseY);
+            for(int i = 0; i < MAX_BALLS; i ++) {
+                balls[i].draw(g);
+            }
+            if (mouseClickedBall) g.drawLine((int) balls[0].getX(), (int) balls[0].getY(), (int) mouseX, (int) mouseY);
 
-            if (detectCollision(ball, ball2)) {
-                collision(ball, ball2);
-                System.out.println("Byla kolizja");
-
+            for(int i = 0; i < MAX_BALLS; i++) {
+                for (int j = 0; j < MAX_BALLS; j++ ) {
+                    if(i>j) {
+                        if (detectCollision(balls[i], balls[j])) {
+                            collision(balls[i], balls[j]);
+                            System.out.println("Byla kolizja");
+                        }
+                    }
+                }
             }
         }
 

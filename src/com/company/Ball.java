@@ -17,13 +17,13 @@ public class Ball {
     private double speed;
 
 
-    public Ball(double x, double y, double radius, double speed, double angle) {
+    public Ball(double x, double y, double radius, double speed, double angle, Color color) {
         this.x = x;
         this.y = y;
         this.speedX = speed * Math.cos(Math.toRadians(angle));
         this.speedY = -speed * Math.sin(Math.toRadians(angle));
         this.radius = radius;
-        this.color = RED;
+        this.color = color;
         this.slow = 0.99;
         this.angle = angle;
         this.speed = speed;
