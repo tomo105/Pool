@@ -133,4 +133,5 @@ public class Ball {
         g.setColor(color);
         g.fillOval((int) (x - radius), (int) (y - radius), (int) (2 * radius), (int) (2 * radius));
     }
+
 }

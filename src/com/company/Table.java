@@ -6,8 +6,8 @@ public class Table {
     int minX, maxX, minY, maxY;
     public static final int POCKET_NUMBER = 6;
     public static final int WINDOW_SIDE = 18;
-    public static Pocket[] topPockets = new Pocket[POCKET_NUMBER / 2];
-    public static Pocket[] bottomPockets = new Pocket[POCKET_NUMBER / 2];
+    public  Pocket[] topPockets = new Pocket[POCKET_NUMBER / 2];
+    public  Pocket[] bottomPockets = new Pocket[POCKET_NUMBER / 2];
 
     public Table(int x, int y, int width, int height) {
         minX = x;
@@ -30,6 +30,22 @@ public class Table {
         g.drawRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
         drawPockets(g);
 
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMaxY() {
+        return maxY;
     }
 
     private void drawPockets(Graphics g) {
