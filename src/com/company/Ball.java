@@ -16,7 +16,6 @@ public class Ball {
     private double angle;
     private double speed;
 
-
     public Ball(double x, double y, double radius, double speed, double angle, Color color) {
         this.x = x;
         this.y = y;
@@ -47,6 +46,10 @@ public class Ball {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     public void setSpeedAndAngle(double speed, double angle) {
