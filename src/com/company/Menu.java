@@ -61,14 +61,13 @@ public class Menu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if(source == i1) {
+        if (source == i1) {
             frame.setVisible(false);
             new Menu();
-        }
-
-        else if(source == i2)
+        } else if (source == i2) {
             JOptionPane.showMessageDialog(i2, "Tutaj napiszemy co robi apka co wykorzystuje i jacy to jestesmy zajebisci, a strzelczyk moze nam ssać drągala");
-
+            JOptionPane.showMessageDialog(i2,"UNIA TARNOW TO NIE JEST POLSKI KLUB, TO NIE JEST POLSKI KLUB!!! ");
+        }
         else if (source == i3)
             game.setBallsSlow(0.95);
 

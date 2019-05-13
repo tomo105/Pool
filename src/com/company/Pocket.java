@@ -19,16 +19,8 @@ public class Pocket {
         return xCorner;
     }
 
-    public void setxCorner(int xCorner) {
-        this.xCorner = xCorner;
-    }
-
     public int getyCorner() {
         return yCorner;
-    }
-
-    public void setyCorner(int yCorner) {
-        this.yCorner = yCorner;
     }
 
     public int getDiameter() {

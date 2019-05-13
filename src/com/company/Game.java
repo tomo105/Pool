@@ -14,6 +14,7 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
     private DrawCanvas canvas;
     private int canvasWidth;
     private int canvasHeight;
+
     private double mouseX;
     private double mouseY;
     private boolean mouseClickedBall;
@@ -29,7 +30,7 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         canvasWidth = width;
         canvasHeight = height;
 
-        radius = 50;
+        radius = 25;
         int x = canvasHeight / 2;
         int y = canvasWidth / 2;
         mouseX = x;
@@ -186,8 +187,8 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         //First ball velocities and position
         ball.setX(x - t * dx);
         ball.setY(y - t * dy);
-        ball.setSpeedX( e * (dx + mx));
-        ball.setSpeedY( e * (dy + my));
+        ball.setSpeedX(e * (dx + mx));
+        ball.setSpeedY(e * (dy + my));
 
         x2 = x2 - t * dx2;
         y2 = y2 - t * dy2;
@@ -199,6 +200,22 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         ball2.setY(y2);
 
 
+    }
+
+    public boolean potTheBall(Ball ball, Pocket[] bottomPocket, Pocket[] topPocket) {
+        for (int i = 0; i < 3; i++) {
+            double dist = Math.sqrt(Math.pow(ball.getX() - topPocket[i].getxCorner(), 2) + Math.pow(ball.getY() - topPocket[i].getyCorner(), 2));
+            double dist2 = Math.sqrt(Math.pow(ball.getX() - bottomPocket[i].getxCorner(), 2) + Math.pow(ball.getY() - bottomPocket[i].getyCorner(), 2));
+
+            if (ball.radius + (topPocket[i].getDiameter() / 2) - dist > 0.001 && ball.getVisible()) {
+                System.out.println("wbiles bile");
+                return true;
+            } else if (ball.radius + (bottomPocket[i].getDiameter() / 2) - dist2 > 0.001 && ball.getVisible()) {
+                System.out.println("wbiles bile");
+                return true;
+            }
+        }
+        return false;
     }
 
     public void gameStart() {
@@ -226,14 +243,14 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         }
     }
 
-    public void setBallsSlow(double slow){
-        for(int i = 0; i < MAX_BALLS; i++){
+    public void setBallsSlow(double slow) {
+        for (int i = 0; i < MAX_BALLS; i++) {
             balls[i].setSlow(slow);
         }
     }
 
-    public void setBallsRadius(double radius){
-        for(int i = 0; i < MAX_BALLS; i++){
+    public void setBallsRadius(double radius) {
+        for (int i = 0; i < MAX_BALLS; i++) {
             balls[i].setRadius(radius);
         }
     }
@@ -259,6 +276,26 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
                             collision(balls[j], balls[i]);
                             System.out.println("Byla kolizja");
                         }
+                    }
+                }
+            }
+            for (int j = 0; j < MAX_BALLS; j++) {
+                if (potTheBall(balls[j], table.topPockets, table.bottomPockets)) {
+                    if (j == 0) {
+                        balls[j].setX(100);
+                        balls[j].setY(100);
+                        balls[j].setSpeedX(0);
+                        balls[j].setSpeedY(0);
+                        System.out.println("wbiles biala");
+
+                    } else {
+
+                        balls[j].setVisible(false);
+                        balls[j].setX(-1000);
+                        balls[j].setY(-1000);
+                        balls[j].setSpeedY(0);
+                        balls[j].setSpeedX(0);
+                        System.out.println("wbiles inna niz biala");
                     }
                 }
             }

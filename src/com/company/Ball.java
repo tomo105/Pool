@@ -15,6 +15,8 @@ public class Ball {
     double slow;
     private double angle;
     private double speed;
+    private boolean visible;
+
 
     public Ball(double x, double y, double radius, double speed, double angle, Color color) {
         this.x = x;
@@ -26,6 +28,15 @@ public class Ball {
         this.slow = 0.99;
         this.angle = angle;
         this.speed = speed;
+        this.visible = true;
+    }
+
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public void setSpeedX(double speedX) {
@@ -65,7 +76,7 @@ public class Ball {
         this.y += this.speedY;
         this.speedX *= slow;
         this.speedY *= slow;
-        if(this.speedY < 0.2 && this.speedX < 0.2 && this.speedY > -0.2 && this.speedX > -0.2){
+        if (this.speedY < 0.2 && this.speedX < 0.2 && this.speedY > -0.2 && this.speedX > -0.2) {
             this.speedX = 0.0f;
             this.speedY = 0.0f;
         }
@@ -125,14 +136,16 @@ public class Ball {
         return speed;
     }
 
-    public double getSpeedFromPosition(){
-        if(this.speedX > 0)
-            return this.speedX  / Math.cos(Math.toRadians(angle));
+    public double getSpeedFromPosition() {
+        if (this.speedX > 0)
+            return this.speedX / Math.cos(Math.toRadians(angle));
         else
-            return -this.speedX  / Math.cos(Math.toRadians(angle));
+            return -this.speedX / Math.cos(Math.toRadians(angle));
     }
 
     public void draw(Graphics g) {
+        if (!visible)
+            return;
         g.setColor(color);
         g.fillOval((int) (x - radius), (int) (y - radius), (int) (2 * radius), (int) (2 * radius));
     }
