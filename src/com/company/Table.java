@@ -24,7 +24,7 @@ public class Table {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(58, 181, 3));
         g.fillRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
         g.setColor(Color.ORANGE);
         g.drawRect(minX, minY, maxX - minX - 1, maxY - minY - 1);

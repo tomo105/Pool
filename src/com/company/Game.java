@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 public class Game extends JPanel implements MouseListener, MouseMotionListener {
 
-    private static final int MAX_BALLS = 3;
+    private static final int MAX_BALLS = 16;
     private Ball[] balls = new Ball[MAX_BALLS];
     private Table table;
 
@@ -21,6 +21,11 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
     private double speed;
     private double angle;
     private int radius;
+    private int diameterPlusSpace;
+
+    public int getRadius() {
+        return radius;
+    }
 
     public Game(int width, int height) {
 
@@ -30,18 +35,31 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
         canvasWidth = width;
         canvasHeight = height;
 
-        radius = 25;
-        int x = canvasHeight / 2;
-        int y = canvasWidth / 2;
+        radius = 18;
+        diameterPlusSpace = 2 * radius + 6;
+        int x = width / 2;
+        int y = height / 2;
         mouseX = x;
         mouseY = y;
 
         int speed = 0;
         int angleInDegree = 0;
-        balls[0] = new Ball(x, y - 300, radius, speed, angleInDegree, Color.WHITE);
-        balls[1] = new Ball(x, y, radius, speed, angleInDegree, Color.RED);
-        balls[2] = new Ball(x, y - 150, radius, speed, angleInDegree, Color.RED);
-
+        balls[0] = new Ball(x * 0.5, y, radius, speed, angleInDegree, Color.WHITE);
+        balls[1] = new Ball(1.5 * x, y, radius, speed, angleInDegree, Color.RED);
+        balls[2] = new Ball(1.5 * x, y + diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[3] = new Ball(1.5 * x, y - diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[4] = new Ball(1.5 * x, y + 2 * diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[5] = new Ball(1.5 * x, y - 2 * diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[6] = new Ball(1.5 * x - diameterPlusSpace, y - 1.5 * diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[7] = new Ball(1.5 * x - diameterPlusSpace, y - diameterPlusSpace * 0.5, radius, speed, angleInDegree, Color.RED);
+        balls[8] = new Ball(1.5 * x - diameterPlusSpace, y + diameterPlusSpace * 0.5, radius, speed, angleInDegree, Color.RED);
+        balls[9] = new Ball(1.5 * x - diameterPlusSpace, y + 1.5 * diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[10] = new Ball(1.5 * x - 2 * diameterPlusSpace, y + diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[11] = new Ball(1.5 * x - 2 * diameterPlusSpace, y - diameterPlusSpace, radius, speed, angleInDegree, Color.RED);
+        balls[12] = new Ball(1.5 * x - 2 * diameterPlusSpace, y, radius, speed, angleInDegree, Color.RED);
+        balls[13] = new Ball(1.5 * x - 3 * diameterPlusSpace, y - diameterPlusSpace * 0.5, radius, speed, angleInDegree, Color.RED);
+        balls[14] = new Ball(1.5 * x - 3 * diameterPlusSpace, y + diameterPlusSpace * 0.5, radius, speed, angleInDegree, Color.RED);
+        balls[15] = new Ball(1.5 * x - 4 * diameterPlusSpace, y, radius, speed, angleInDegree, Color.RED);
         table = new Table(0, 0, canvasWidth, canvasHeight);
 
         canvas = new DrawCanvas();
@@ -203,15 +221,15 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
     }
 
     public boolean potTheBall(Ball ball, Pocket[] bottomPocket, Pocket[] topPocket) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < bottomPocket.length; i++) {
             double dist = Math.sqrt(Math.pow(ball.getX() - topPocket[i].getxCorner(), 2) + Math.pow(ball.getY() - topPocket[i].getyCorner(), 2));
             double dist2 = Math.sqrt(Math.pow(ball.getX() - bottomPocket[i].getxCorner(), 2) + Math.pow(ball.getY() - bottomPocket[i].getyCorner(), 2));
 
             if (ball.radius + (topPocket[i].getDiameter() / 2) - dist > 0.001 && ball.getVisible()) {
-                System.out.println("wbiles bile");
+                System.out.println("You pot the ball!");
                 return true;
             } else if (ball.radius + (bottomPocket[i].getDiameter() / 2) - dist2 > 0.001 && ball.getVisible()) {
-                System.out.println("wbiles bile");
+                System.out.println("You pot the ball!");
                 return true;
             }
         }
@@ -274,7 +292,6 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
                     if (i > j) {
                         if (detectCollision(balls[i], balls[j])) {
                             collision(balls[j], balls[i]);
-                            System.out.println("Byla kolizja");
                         }
                     }
                 }
@@ -282,20 +299,20 @@ public class Game extends JPanel implements MouseListener, MouseMotionListener {
             for (int j = 0; j < MAX_BALLS; j++) {
                 if (potTheBall(balls[j], table.topPockets, table.bottomPockets)) {
                     if (j == 0) {
-                        balls[j].setX(100);
-                        balls[j].setY(100);
+                        balls[j].setX(canvasWidth * 0.25);
+                        balls[j].setY(canvasHeight * 0.5);
                         balls[j].setSpeedX(0);
                         balls[j].setSpeedY(0);
-                        System.out.println("wbiles biala");
+                        System.out.println("Pot white ball");
 
                     } else {
-
                         balls[j].setVisible(false);
                         balls[j].setX(-1000);
                         balls[j].setY(-1000);
                         balls[j].setSpeedY(0);
                         balls[j].setSpeedX(0);
-                        System.out.println("wbiles inna niz biala");
+                        balls[j].setRadius(0);
+                        System.out.println("Pot red ball");
                     }
                 }
             }

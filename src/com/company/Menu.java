@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 public class Menu implements ActionListener {
 
     JMenu menu, submenu, submenu2;
-    JMenuItem i1, i2, i3, i4, i5, i6, i7, i8;
-    Game game = new Game(900, 600);
+    JMenuItem i1, i2, i3, i4, i5, i6, i7, i8, i9;
+    Game game = new Game(1600, 800);
     JFrame frame = new JFrame("Bilard");
 
     public Menu() {
@@ -28,7 +28,7 @@ public class Menu implements ActionListener {
         i6 = new JMenuItem("Small");
         i7 = new JMenuItem("Medium");
         i8 = new JMenuItem("Big");
-
+        i9 = new JMenuItem("XXL");
         i1.addActionListener(this);
         i2.addActionListener(this);
         i3.addActionListener(this);
@@ -37,6 +37,7 @@ public class Menu implements ActionListener {
         i6.addActionListener(this);
         i7.addActionListener(this);
         i8.addActionListener(this);
+        i9.addActionListener(this);
 
         menu.add(i1);
         menu.add(i2);
@@ -46,6 +47,7 @@ public class Menu implements ActionListener {
         submenu2.add(i6);
         submenu2.add(i7);
         submenu2.add(i8);
+        submenu2.add(i9);
 
         menu.add(submenu);
         menu.add(submenu2);
@@ -65,10 +67,8 @@ public class Menu implements ActionListener {
             frame.setVisible(false);
             new Menu();
         } else if (source == i2) {
-            JOptionPane.showMessageDialog(i2, "Tutaj napiszemy co robi apka co wykorzystuje i jacy to jestesmy zajebisci, a strzelczyk moze nam ssać drągala");
-            JOptionPane.showMessageDialog(i2,"UNIA TARNOW TO NIE JEST POLSKI KLUB, TO NIE JEST POLSKI KLUB!!! ");
-        }
-        else if (source == i3)
+            JOptionPane.showMessageDialog(i2, "SUPER APKA !!!!!!!!!!!!!!!!!!!!!!1");
+        } else if (source == i3)
             game.setBallsSlow(0.95);
 
         else if (source == i4)
@@ -78,13 +78,14 @@ public class Menu implements ActionListener {
             game.setBallsSlow(0.99);
 
         else if (source == i6)
-            game.setBallsRadius(10);
+            game.setBallsRadius(game.getRadius() * 0.5);
 
         else if (source == i7)
-            game.setBallsRadius(30);
+            game.setBallsRadius(game.getRadius() * 0.8);
 
         else if (source == i8)
-            game.setBallsRadius(50);
-
+            game.setBallsRadius(game.getRadius());
+        else if (source == i9)
+            game.setBallsRadius(game.getRadius() * 1.15);
     }
 }
